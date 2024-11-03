@@ -10,7 +10,6 @@ export default function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Exchanges />
       <StatusBar style="auto" />
     </QueryClientProvider>
   );

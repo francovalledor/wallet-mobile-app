@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios, { AxiosResponse } from "axios";
+import { CreateOrderDTO, CreateTransferDTO, Order, Transfer } from "../types";
 
 const defaultHandler = <T>(response: AxiosResponse<T>) => response.data;
 
@@ -40,33 +41,9 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-enum OrderStatus {
-  OPEN = "OPEN",
-  COMPLETED = "COMPLETED",
-  CANCELLED = "CANCELLED",
-}
-
-type Order = {
-  id: number;
-  amount: number;
-  subject?: string;
-  status: OrderStatus;
-  transferId: number | null;
-  createdAt: string;
-  updatedAt: string;
-  requesterEmail: string;
-  recipientEmail: string | null;
-};
-
 const getOrders = () => api.get<Order[]>("/orders").then(defaultHandler);
 const getOrder = (id: number) =>
   api.get<Order>(`/orders/${id}`).then(defaultHandler);
-
-type CreateOrderDTO = {
-  amount: number;
-  recipientEmail: string | undefined;
-  subject: string | undefined;
-};
 
 const createOrder = (params: CreateOrderDTO) =>
   api.post<Order>("/orders", params).then(defaultHandler);
@@ -76,26 +53,6 @@ const cancelOrder = (id: number) =>
 
 const completeOrder = (id: number) =>
   api.patch<Order>(`/orders/${id}/complete`).then(defaultHandler);
-
-type CreateTransferDTO = {
-  amount: number;
-  email: string;
-  subject: string | undefined;
-};
-
-type User = {
-  id: number;
-  email: string;
-};
-
-type Transfer = {
-  amount: number;
-  subject: string | undefined;
-  from: User;
-  to: User;
-  id: number;
-  createdAt: string;
-};
 
 const createTransfer = (params: CreateTransferDTO) =>
   api.post<Transfer>("/transfers", params).then(defaultHandler);
