@@ -1,6 +1,8 @@
 import React from "react";
 import { View, Text, FlatList, StyleSheet } from "react-native";
 import { useOrders, useProfile, useTransfers } from "../client/wallet-api";
+import OrderItem from "../components/OrderItem";
+import TransferItem from "../components/TransferItem";
 
 const MainScreen: React.FC = () => {
   const { data: transfers = [], ...transferQuery } = useTransfers();
@@ -16,32 +18,14 @@ const MainScreen: React.FC = () => {
       <FlatList
         data={transfers}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.item}>
-            <Text>
-              From: {item.from.email} | To: {item.to.email}
-            </Text>
-            <Text>
-              Amount: ${item.amount.toFixed(2)} | Subject: {item.subject}
-            </Text>
-            <Text>Date: {item.createdAt}</Text>
-          </View>
-        )}
+        renderItem={({ item }) => <TransferItem transfer={item} />}
       />
 
       <Text style={styles.subHeader}>Recent Orders</Text>
       <FlatList
         data={orders}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.item}>
-            <Text>
-              Amount: ${item.amount.toFixed(2)} | Status: {item.status}
-            </Text>
-            <Text>Subject: {item.subject}</Text>
-            <Text>Date: {item.updatedAt || item.createdAt}</Text>
-          </View>
-        )}
+        renderItem={({ item }) => <OrderItem order={item} />}
       />
     </View>
   );
