@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, FlatList, StyleSheet } from "react-native";
+import { View, Text, FlatList, StyleSheet, Button } from "react-native";
 import { useOrders, useProfile, useTransfers } from "../client/wallet-api";
 import OrderItem from "../components/OrderItem";
 import TransferItem from "../components/TransferItem";
@@ -9,8 +9,17 @@ const MainScreen: React.FC = () => {
   const { data: orders = [], ...ordersQuery } = useOrders();
   const { data: profile, ...profileQuery } = useProfile();
 
+  const refetch = () => {
+    return Promise.all([
+      transferQuery.refetch(),
+      ordersQuery.refetch(),
+      profileQuery.refetch(),
+    ]);
+  };
+
   return (
     <View style={styles.container}>
+      <Button title="Refresh" onPress={refetch} />
       <Text style={styles.label}>Email: {profile?.email}</Text>
       <Text style={styles.label}>Balance: ${profile?.balance.toFixed(2)}</Text>
 

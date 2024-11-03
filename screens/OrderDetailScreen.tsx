@@ -1,14 +1,14 @@
-import React from "react";
+import React, { useRef } from "react";
 import { View, Text, Button, StyleSheet } from "react-native";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { Order, OrderStatus, RootStackParamList } from "../types";
 import { useOrder, useProfile, walletApi } from "../client/wallet-api";
 import { formatDate } from "../utils/formatDate";
+import QRCode from "react-native-qrcode-svg";
 
 type OrderDetailScreenRouteProp = RouteProp<RootStackParamList, "OrderDetail">;
 
 const OrderDetailScreen: React.FC = () => {
-  const navigation = useNavigation();
   const route = useRoute<OrderDetailScreenRouteProp>();
   const { orderId } = route.params;
   const { data: order, isLoading, refetch } = useOrder(orderId);
@@ -17,7 +17,6 @@ const OrderDetailScreen: React.FC = () => {
   if (!order || isLoading) return null;
 
   const isOwnOrder = order.requesterEmail === profile?.email;
-
   const isInsufficientFunds =
     (profile?.balance ?? 0) < (order?.amount ?? Number.POSITIVE_INFINITY);
 
@@ -36,11 +35,10 @@ const OrderDetailScreen: React.FC = () => {
       <>
         {order.status === OrderStatus.OPEN && (
           <View>
-            <Button
-              title="Cancel"
-              onPress={handleCancel}
-              disabled={isInsufficientFunds}
-            />
+            <View style={styles.qrContainer}>
+              <QRCode value={JSON.stringify(order)} size={200} />
+            </View>
+            <Button title="Cancel" onPress={handleCancel} />
           </View>
         )}
       </>
@@ -97,6 +95,11 @@ const styles = StyleSheet.create({
   warning: {
     color: "red",
     marginTop: 10,
+  },
+  qrContainer: {
+    alignItems: "center",
+    marginTop: 20,
+    marginBottom: 20,
   },
 });
 
