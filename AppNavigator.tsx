@@ -16,10 +16,26 @@ const AppNavigator = () => {
       <Stack.Navigator initialRouteName="Login">
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
-        <Stack.Screen name="Main" component={MainScreen} />
-        <Stack.Screen name="OrderDetail" component={OrderDetailScreen} />
-        <Stack.Screen name="CreateOrder" component={CreateOrderScreen} />
-        <Stack.Screen name="ScanQr" component={ScanQrScreen} />
+        <Stack.Screen
+          name="Main"
+          component={MainScreen}
+          options={{ headerTitle: "Welcome" }}
+        />
+        <Stack.Screen
+          name="OrderDetail"
+          component={OrderDetailScreen}
+          options={{ headerTitle: "Order Detail" }}
+        />
+        <Stack.Screen
+          name="CreateOrder"
+          component={CreateOrderScreen}
+          options={{ headerTitle: "Create Order" }}
+        />
+        <Stack.Screen
+          name="ScanQr"
+          component={ScanQrScreen}
+          options={{ headerTitle: "Scan Order" }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
