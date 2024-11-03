@@ -3,6 +3,7 @@ export type RootStackParamList = {
   Register: undefined;
   Main: undefined;
   OrderDetail: { orderId: number };
+  CreateOrder: undefined;
 };
 
 export enum OrderStatus {

@@ -1,10 +1,8 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { formatDistanceToNow } from "date-fns";
-import { Order, RootStackParamList } from "../types";
-import { useNavigation } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
+import { Order } from "../types";
 import { formatDate } from "../utils/formatDate";
+import { useAppNavigation } from "../hooks/useAppNavigation";
 
 interface OrderItemProps {
   order: Order;
@@ -14,7 +12,7 @@ interface OrderItemProps {
 const OrderItem: React.FC<OrderItemProps> = ({ order, isIncoming }) => {
   const dateFormatted = formatDate(order.updatedAt || order.createdAt);
 
-  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const navigation = useAppNavigation();
 
   const handlePress = () => {
     navigation.navigate("OrderDetail", { orderId: order.id });

@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { View, Text, Button, StyleSheet } from "react-native";
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
+import { RouteProp, useRoute } from "@react-navigation/native";
 import { Order, OrderStatus, RootStackParamList } from "../types";
 import { useOrder, useProfile, walletApi } from "../client/wallet-api";
 import { formatDate } from "../utils/formatDate";

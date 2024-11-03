@@ -3,8 +3,14 @@ import { View, Text, FlatList, StyleSheet, Button } from "react-native";
 import { useOrders, useProfile, useTransfers } from "../client/wallet-api";
 import OrderItem from "../components/OrderItem";
 import TransferItem from "../components/TransferItem";
+import { useAppNavigation } from "../hooks/useAppNavigation";
+
+const Separator = () => {
+  return <View style={styles.separator} />;
+};
 
 const MainScreen: React.FC = () => {
+  const navigation = useAppNavigation();
   const { data: transfers = [], ...transferQuery } = useTransfers();
   const { data: orders = [], ...ordersQuery } = useOrders();
   const { data: profile, ...profileQuery } = useProfile();
@@ -17,12 +23,15 @@ const MainScreen: React.FC = () => {
     ]);
   };
 
+  const goToCreateOrder = () => navigation.navigate("CreateOrder");
+
   return (
     <View style={styles.container}>
       <Button title="Refresh" onPress={refetch} />
       <Text style={styles.label}>Email: {profile?.email}</Text>
       <Text style={styles.label}>Balance: ${profile?.balance.toFixed(2)}</Text>
-
+      <Button title="Create Order" onPress={goToCreateOrder} />
+      <Separator />
       <Text style={styles.subHeader}>Recent Transfers</Text>
       <FlatList
         data={transfers}
@@ -79,6 +88,9 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOpacity: 0.1,
     shadowRadius: 10,
+  },
+  separator: {
+    marginBottom: 20,
   },
 });
 
