@@ -1,6 +1,7 @@
 export type RootStackParamList = {
-  LoginScreen: undefined;
-  RegisterScreen: undefined;
+  Login: undefined;
+  Register: undefined;
+  Main: undefined;
 };
 
 export enum OrderStatus {

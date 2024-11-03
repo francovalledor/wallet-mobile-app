@@ -5,21 +5,22 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../types";
 import { walletApi } from "../client/wallet-api";
 
-type LoginScreenProps = {
-  navigation: StackNavigationProp<RootStackParamList, "LoginScreen">;
+type RegisterScreenProps = {
+  navigation: StackNavigationProp<RootStackParamList, "Register">;
 };
 
-const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
+const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const handleLogin = async () => {
+  const handleRegister = async () => {
     try {
-      const response = await walletApi.login(email, password);
-      const token = response.access_token;
+      await walletApi.register(email, password);
+      Alert.alert("Registration successful");
+      navigation.navigate("Login");
     } catch (error: any) {
       Alert.alert(
-        "Login failed",
+        "Registration failed",
         error.response?.data?.message || "Something went wrong"
       );
     }
@@ -27,7 +28,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
 
   return (
     <View>
-      <Text>Login</Text>
+      <Text>Register</Text>
       <TextInput placeholder="Email" value={email} onChangeText={setEmail} />
       <TextInput
         placeholder="Password"
@@ -35,13 +36,13 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
         secureTextEntry
         onChangeText={setPassword}
       />
-      <Button title="Login" onPress={handleLogin} />
+      <Button title="Register" onPress={handleRegister} />
       <Button
-        title="Go to Register"
-        onPress={() => navigation.navigate("RegisterScreen")}
+        title="Go to Login"
+        onPress={() => navigation.navigate("Login")}
       />
     </View>
   );
 };
 
-export default LoginScreen;
+export default RegisterScreen;
