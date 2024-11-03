@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios, { AxiosResponse } from "axios";
 import { CreateOrderDTO, CreateTransferDTO, Order, Transfer } from "../types";
+import { useQuery } from "@tanstack/react-query";
 
 const defaultHandler = <T>(response: AxiosResponse<T>) => response.data;
 
@@ -69,6 +70,29 @@ type Profile = {
 };
 
 const getProfile = () => api.get<Profile>("/user/profile").then(defaultHandler);
+
+const MINUTE = 60 * 24 * 1000;
+
+export const useTransfers = () =>
+  useQuery({
+    queryKey: ["transfers"],
+    queryFn: getTransfers,
+    staleTime: 5 * MINUTE,
+  });
+
+export const useOrders = () =>
+  useQuery({
+    queryKey: ["orders"],
+    queryFn: getOrders,
+    staleTime: 5 * MINUTE,
+  });
+
+export const useProfile = () =>
+  useQuery({
+    queryKey: ["profile"],
+    queryFn: getProfile,
+    staleTime: 5 * MINUTE,
+  });
 
 export const walletApi = {
   login,

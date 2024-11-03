@@ -1,41 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { View, Text, FlatList, StyleSheet } from "react-native";
-import { walletApi } from "../client/wallet-api";
-import { Order, Transfer } from "../types";
+import { useOrders, useProfile, useTransfers } from "../client/wallet-api";
 
 const MainScreen: React.FC = () => {
-  const [email, setEmail] = useState<string>("");
-  const [balance, setBalance] = useState<number>(0);
-  const [transfers, setTransfers] = useState<Transfer[]>([]);
-  const [orders, setOrders] = useState<Order[]>([]);
-
-  useEffect(() => {
-    fetchUserData();
-    fetchTransfers();
-    fetchOrders();
-  }, []);
-
-  const fetchUserData = async () => {
-    const { balance, email } = await walletApi.getProfile();
-    setEmail(email);
-    setBalance(balance);
-  };
-
-  const fetchTransfers = async () => {
-    const recentTransfers = await walletApi.transfer.getAll();
-    setTransfers(recentTransfers.slice(0, 10));
-  };
-
-  const fetchOrders = async () => {
-    const recentOrders = await walletApi.order.getAll();
-    setOrders(recentOrders.slice(0, 10));
-  };
+  const { data: transfers = [], ...transferQuery } = useTransfers();
+  const { data: orders = [], ...ordersQuery } = useOrders();
+  const { data: profile, ...profileQuery } = useProfile();
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Main Dashboard</Text>
-      <Text style={styles.label}>Email: {email}</Text>
-      <Text style={styles.label}>Balance: ${balance.toFixed(2)}</Text>
+      <Text style={styles.label}>Email: {profile?.email}</Text>
+      <Text style={styles.label}>Balance: ${profile?.balance.toFixed(2)}</Text>
 
       <Text style={styles.subHeader}>Recent Transfers</Text>
       <FlatList
