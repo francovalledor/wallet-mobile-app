@@ -5,7 +5,7 @@ import { Transfer } from "../types";
 
 interface TransferItemProps {
   transfer: Transfer;
-  isIncoming: (transfer: TransferItemProps["transfer"]) => boolean;
+  isIncoming: (transfer: Transfer) => boolean;
 }
 
 const TransferItem: React.FC<TransferItemProps> = ({

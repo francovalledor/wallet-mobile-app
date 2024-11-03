@@ -30,7 +30,12 @@ const MainScreen: React.FC = () => {
       <FlatList
         data={orders}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <OrderItem order={item} />}
+        renderItem={({ item }) => (
+          <OrderItem
+            order={item}
+            isIncoming={(o) => o.recipientEmail === profile?.email}
+          />
+        )}
       />
     </View>
   );

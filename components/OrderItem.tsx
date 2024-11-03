@@ -5,9 +5,10 @@ import { Order } from "../types";
 
 interface OrderItemProps {
   order: Order;
+  isIncoming: (order: Order) => boolean;
 }
 
-const OrderItem: React.FC<OrderItemProps> = ({ order }) => {
+const OrderItem: React.FC<OrderItemProps> = ({ order, isIncoming }) => {
   const dateFormatted = formatDistanceToNow(
     new Date(order.updatedAt || order.createdAt),
     {
@@ -18,15 +19,17 @@ const OrderItem: React.FC<OrderItemProps> = ({ order }) => {
   return (
     <View style={styles.item}>
       <Text>
-        Amount: ${order.amount.toFixed(2)} | Status: {order.status}
+        {isIncoming(order) ? "Incoming" : "Outgoing"} ({order.status})
       </Text>
-      <Text>Subject: {order.subject}</Text>
-      <Text>Date: {dateFormatted}</Text>
+      <Text style={styles.amount}>${order.amount.toFixed(2)}</Text>
+      <Text> {order.subject}</Text>
+      <Text>⏲ {dateFormatted}</Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  amount: { fontWeight: "bold" },
   item: {
     padding: 10,
     backgroundColor: "#fff",
