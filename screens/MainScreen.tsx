@@ -24,6 +24,7 @@ const MainScreen: React.FC = () => {
   };
 
   const goToCreateOrder = () => navigation.navigate("CreateOrder");
+  const goToScanQr = () => navigation.navigate("ScanQr");
 
   return (
     <View style={styles.container}>
@@ -31,6 +32,7 @@ const MainScreen: React.FC = () => {
       <Text style={styles.label}>Email: {profile?.email}</Text>
       <Text style={styles.label}>Balance: ${profile?.balance.toFixed(2)}</Text>
       <Button title="Create Order" onPress={goToCreateOrder} />
+      <Button title="Scan QR" onPress={goToScanQr} />
       <Separator />
       <Text style={styles.subHeader}>Recent Transfers</Text>
       <FlatList

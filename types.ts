@@ -4,6 +4,7 @@ export type RootStackParamList = {
   Main: undefined;
   OrderDetail: { orderId: number };
   CreateOrder: undefined;
+  ScanQr: undefined;
 };
 
 export enum OrderStatus {

@@ -6,6 +6,7 @@ import RegisterScreen from "./screens/RegisterScreen";
 import MainScreen from "./screens/MainScreen";
 import OrderDetailScreen from "./screens/OrderDetailScreen";
 import CreateOrderScreen from "./screens/CreateOrderScreen";
+import ScanQrScreen from "./screens/ScanQrScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -18,6 +19,7 @@ const AppNavigator = () => {
         <Stack.Screen name="Main" component={MainScreen} />
         <Stack.Screen name="OrderDetail" component={OrderDetailScreen} />
         <Stack.Screen name="CreateOrder" component={CreateOrderScreen} />
+        <Stack.Screen name="ScanQr" component={ScanQrScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
