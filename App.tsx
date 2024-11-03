@@ -3,11 +3,11 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AppNavigator from "./AppNavigator";
 
-export default function App() {
-  const queryClient = new QueryClient({
-    defaultOptions: { queries: { retry: 2 } },
-  });
+export const queryClient = new QueryClient({
+  defaultOptions: { queries: { retry: 2 } },
+});
 
+export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <SafeAreaView style={{ flex: 1 }}>

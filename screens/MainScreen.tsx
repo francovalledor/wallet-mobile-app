@@ -28,11 +28,13 @@ const MainScreen: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <Button title="Refresh" onPress={refetch} />
+      <View style={styles.buttons}>
+        <Button title="Refresh" onPress={refetch} />
+        <Button title="Create Order" onPress={goToCreateOrder} />
+        <Button title="Scan QR" onPress={goToScanQr} />
+      </View>
       <Text style={styles.label}>Email: {profile?.email}</Text>
       <Text style={styles.label}>Balance: ${profile?.balance.toFixed(2)}</Text>
-      <Button title="Create Order" onPress={goToCreateOrder} />
-      <Button title="Scan QR" onPress={goToScanQr} />
       <Separator />
       <Text style={styles.subHeader}>Recent Transfers</Text>
       <FlatList
@@ -93,6 +95,13 @@ const styles = StyleSheet.create({
   },
   separator: {
     marginBottom: 20,
+  },
+  buttons: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    gap: 5,
+    marginBottom: 25,
   },
 });
 
