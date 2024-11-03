@@ -2,33 +2,43 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { formatDistanceToNow } from "date-fns";
 import { Transfer } from "../types";
-import { useProfile } from "../client/wallet-api";
 
 interface TransferItemProps {
   transfer: Transfer;
+  isIncoming: (transfer: TransferItemProps["transfer"]) => boolean;
 }
 
-const TransferItem: React.FC<TransferItemProps> = ({ transfer }) => {
-  const { data } = useProfile();
-
+const TransferItem: React.FC<TransferItemProps> = ({
+  transfer,
+  isIncoming,
+}) => {
   const dateFormatted = formatDistanceToNow(new Date(transfer.createdAt), {
     addSuffix: true,
   });
 
+  const isTransferIncoming = isIncoming(transfer);
+  const otherParticipantEmail = isTransferIncoming
+    ? transfer.from.email
+    : transfer.to.email;
+  const arrowColor = isTransferIncoming ? "green" : "red";
+  const arrowDirection = isTransferIncoming ? "←" : "→";
+
   return (
     <View style={styles.item}>
-      <Text>
-        From: {transfer.from.email} | To: {transfer.to.email}
-      </Text>
-      <Text>
-        Amount: ${transfer.amount.toFixed(2)} | Subject: {transfer.subject}
-      </Text>
-      <Text>Date: {dateFormatted}</Text>
+      <Text style={styles.subject}>{transfer.subject}</Text>
+      <Text style={styles.amount}>${transfer.amount.toFixed(2)}</Text>
+      <View style={styles.participantContainer}>
+        <Text style={{ color: arrowColor }}>{arrowDirection}</Text>
+        <Text>{otherParticipantEmail}</Text>
+      </View>
+      <Text>⏲ {dateFormatted}</Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  subject: { fontSize: 16, fontWeight: "bold" },
+  amount: { fontWeight: "bold" },
   item: {
     padding: 10,
     backgroundColor: "#fff",
@@ -37,6 +47,11 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOpacity: 0.1,
     shadowRadius: 10,
+  },
+  participantContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-start",
   },
 });
 

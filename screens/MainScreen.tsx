@@ -18,7 +18,12 @@ const MainScreen: React.FC = () => {
       <FlatList
         data={transfers}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <TransferItem transfer={item} />}
+        renderItem={({ item }) => (
+          <TransferItem
+            transfer={item}
+            isIncoming={(tr) => tr.to.email === profile?.email}
+          />
+        )}
       />
 
       <Text style={styles.subHeader}>Recent Orders</Text>
