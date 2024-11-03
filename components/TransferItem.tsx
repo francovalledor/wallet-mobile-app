@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { formatDistanceToNow } from "date-fns";
 import { Transfer } from "../types";
+import { formatDate } from "../utils/formatDate";
 
 interface TransferItemProps {
   transfer: Transfer;
@@ -12,9 +13,7 @@ const TransferItem: React.FC<TransferItemProps> = ({
   transfer,
   isIncoming,
 }) => {
-  const dateFormatted = formatDistanceToNow(new Date(transfer.createdAt), {
-    addSuffix: true,
-  });
+  const dateFormatted = formatDate(transfer.createdAt);
 
   const isTransferIncoming = isIncoming(transfer);
   const otherParticipantEmail = isTransferIncoming

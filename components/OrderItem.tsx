@@ -1,7 +1,10 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { formatDistanceToNow } from "date-fns";
-import { Order } from "../types";
+import { Order, RootStackParamList } from "../types";
+import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { formatDate } from "../utils/formatDate";
 
 interface OrderItemProps {
   order: Order;
@@ -9,22 +12,31 @@ interface OrderItemProps {
 }
 
 const OrderItem: React.FC<OrderItemProps> = ({ order, isIncoming }) => {
-  const dateFormatted = formatDistanceToNow(
-    new Date(order.updatedAt || order.createdAt),
-    {
-      addSuffix: true,
-    }
-  );
+  const dateFormatted = formatDate(order.updatedAt || order.createdAt);
+
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+
+  const handlePress = () => {
+    navigation.navigate("OrderDetail", { orderId: order.id });
+  };
 
   return (
-    <View style={styles.item}>
-      <Text>
-        {isIncoming(order) ? "Incoming" : "Outgoing"} ({order.status})
-      </Text>
-      <Text style={styles.amount}>${order.amount.toFixed(2)}</Text>
-      <Text> {order.subject}</Text>
-      <Text>⏲ {dateFormatted}</Text>
-    </View>
+    <TouchableOpacity onPress={handlePress}>
+      <View style={styles.item}>
+        <Text>#{order.id}</Text>
+        <Text>
+          {isIncoming(order) ? "Incoming" : "Outgoing"} ({order.status})
+        </Text>
+        <Text>
+          {isIncoming(order)
+            ? order.requesterEmail
+            : order.recipientEmail || "anybody"}
+        </Text>
+        <Text style={styles.amount}>${order.amount.toFixed(2)}</Text>
+        <Text> {order.subject}</Text>
+        <Text>⏲ {dateFormatted}</Text>
+      </View>
+    </TouchableOpacity>
   );
 };
 

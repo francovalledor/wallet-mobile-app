@@ -54,7 +54,6 @@ const cancelOrder = (id: number) =>
 
 const completeOrder = (id: number) =>
   api.patch<Order>(`/orders/${id}/complete`).then(defaultHandler);
-
 const createTransfer = (params: CreateTransferDTO) =>
   api.post<Transfer>("/transfers", params).then(defaultHandler);
 
@@ -84,6 +83,13 @@ export const useOrders = () =>
   useQuery({
     queryKey: ["orders"],
     queryFn: getOrders,
+    staleTime: 5 * MINUTE,
+  });
+
+export const useOrder = (orderId: number) =>
+  useQuery({
+    queryKey: ["order", orderId],
+    queryFn: () => getOrder(orderId),
     staleTime: 5 * MINUTE,
   });
 
