@@ -12,7 +12,7 @@ const OrderDetailScreen: React.FC = () => {
   const route = useRoute<OrderDetailScreenRouteProp>();
   const { orderId } = route.params;
   const { data: order, isLoading, refetch } = useOrder(orderId);
-  const { data: profile } = useProfile();
+  const { data: profile, refetch: refetchBalance } = useProfile();
 
   if (!order || isLoading) return null;
 
@@ -23,6 +23,7 @@ const OrderDetailScreen: React.FC = () => {
   const handlePay = async () => {
     await walletApi.order.complete(orderId);
     await refetch();
+    await refetchBalance();
   };
 
   const handleCancel = async () => {
@@ -69,8 +70,14 @@ const OrderDetailScreen: React.FC = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Order Details</Text>
-      <Text>Balance: ${profile?.balance.toFixed(2)}</Text>
-      <Text>Amount: ${order.amount.toFixed(2)}</Text>
+      <Text style={styles.balance}>
+        Balance: ${profile?.balance.toFixed(2)}
+      </Text>
+      <Text style={styles.amount}>Amount: ${order.amount.toFixed(2)}</Text>
+      <View style={styles.fromTo}>
+        <Text>From: {order.requesterEmail}</Text>
+        {<Text>To: {order.recipientEmail ?? "anyone"}</Text>}
+      </View>
       <Text>Subject: {order.subject}</Text>
       <Text>Status: {order.status}</Text>
       <Text>Updated: {formatDate(order.updatedAt || order.createdAt)}</Text>
@@ -100,6 +107,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 20,
     marginBottom: 20,
+  },
+  balance: {
+    marginBottom: 20,
+  },
+
+  amount: {
+    fontSize: 20,
+  },
+  fromTo: {
+    display: "flex",
+    flexDirection: "row",
+    gap: 10,
   },
 });
 
